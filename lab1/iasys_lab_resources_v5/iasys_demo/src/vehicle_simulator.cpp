@@ -10,6 +10,7 @@
 #include "nav_msgs/msg/odometry.hpp"
 #include "nav_msgs/msg/path.hpp"
 #include "rclcpp/rclcpp.hpp"
+#include "std_srvs/srv/trigger.hpp"
 #include "tf2_ros/transform_broadcaster.h"
 #include "visualization_msgs/msg/marker.hpp"
 #include "visualization_msgs/msg/marker_array.hpp"
@@ -22,9 +23,12 @@ public:
   VehicleSimulator()
   : Node("vehicle_simulator")
   {
-    x_ = declare_parameter<double>("start_x", -7.0);
-    y_ = declare_parameter<double>("start_y", -6.0);
-    yaw_ = declare_parameter<double>("start_yaw", 0.0);
+    start_x_ = declare_parameter<double>("start_x", -7.0);
+    start_y_ = declare_parameter<double>("start_y", -6.0);
+    start_yaw_ = declare_parameter<double>("start_yaw", 0.0);
+    x_ = start_x_;
+    y_ = start_y_;
+    yaw_ = start_yaw_;
     max_linear_speed_ = declare_parameter<double>("max_linear_speed", 1.2);
     max_angular_speed_ = declare_parameter<double>("max_angular_speed", 1.8);
 
@@ -38,6 +42,11 @@ public:
     vehicle_markers_pub_ =
       create_publisher<visualization_msgs::msg::MarkerArray>("/vehicle_markers", 10);
     trajectory_pub_ = create_publisher<nav_msgs::msg::Path>("/trajectory", 10);
+    reset_service_ = create_service<std_srvs::srv::Trigger>(
+      "/reset_vehicle",
+      std::bind(
+        &VehicleSimulator::onReset, this,
+        std::placeholders::_1, std::placeholders::_2));
 
     tf_broadcaster_ = std::make_unique<tf2_ros::TransformBroadcaster>(*this);
     last_time_ = now();
@@ -82,6 +91,23 @@ private:
   {
     v_cmd_ = std::clamp(msg->linear.x, -max_linear_speed_, max_linear_speed_);
     w_cmd_ = std::clamp(msg->angular.z, -max_angular_speed_, max_angular_speed_);
+  }
+
+
+  void onReset(
+    const std::shared_ptr<std_srvs::srv::Trigger::Request> /*request*/,
+    std::shared_ptr<std_srvs::srv::Trigger::Response> response)
+  {
+    x_ = start_x_;
+    y_ = start_y_;
+    yaw_ = start_yaw_;
+    v_cmd_ = 0.0;
+    w_cmd_ = 0.0;
+    trajectory_.poses.clear();
+    last_time_ = now();
+    response->success = true;
+    response->message = "Vehicle reset to the initial pose.";
+    RCLCPP_INFO(get_logger(), "%s", response->message.c_str());
   }
 
   void publishVehicleMarkers(const rclcpp::Time & stamp)
@@ -214,6 +240,9 @@ private:
     publishTrajectory(current_time);
   }
 
+  double start_x_{-7.0};
+  double start_y_{-6.0};
+  double start_yaw_{0.0};
   double x_{0.0};
   double y_{0.0};
   double yaw_{0.0};
@@ -229,6 +258,7 @@ private:
   rclcpp::Publisher<visualization_msgs::msg::Marker>::SharedPtr marker_pub_;
   rclcpp::Publisher<visualization_msgs::msg::MarkerArray>::SharedPtr vehicle_markers_pub_;
   rclcpp::Publisher<nav_msgs::msg::Path>::SharedPtr trajectory_pub_;
+  rclcpp::Service<std_srvs::srv::Trigger>::SharedPtr reset_service_;
   std::unique_ptr<tf2_ros::TransformBroadcaster> tf_broadcaster_;
   rclcpp::TimerBase::SharedPtr timer_;
 };

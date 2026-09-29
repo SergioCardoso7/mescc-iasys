@@ -12,6 +12,7 @@ find_package(ament_cmake REQUIRED)
 find_package(geometry_msgs REQUIRED)
 find_package(nav_msgs REQUIRED)
 find_package(rclcpp REQUIRED)
+find_package(std_srvs REQUIRED)
 find_package(tf2_ros REQUIRED)
 find_package(visualization_msgs REQUIRED)
 
@@ -19,7 +20,7 @@ add_executable(world_node src/world_node.cpp)
 ament_target_dependencies(world_node rclcpp geometry_msgs nav_msgs visualization_msgs)
 
 add_executable(vehicle_simulator src/vehicle_simulator.cpp)
-ament_target_dependencies(vehicle_simulator rclcpp geometry_msgs nav_msgs tf2_ros visualization_msgs)
+ament_target_dependencies(vehicle_simulator rclcpp geometry_msgs nav_msgs tf2_ros visualization_msgs std_srvs)
 
 add_executable(simple_planner src/simple_planner.cpp)
 target_include_directories(simple_planner PRIVATE include)

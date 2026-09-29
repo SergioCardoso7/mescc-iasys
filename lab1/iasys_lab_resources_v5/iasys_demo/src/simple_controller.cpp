@@ -63,6 +63,12 @@ private:
 
   void control()
   {
+    // Read the current parameter values so ros2 param set takes effect at runtime.
+    get_parameter("linear_speed", linear_speed_);
+    get_parameter("angular_gain", angular_gain_);
+    get_parameter("waypoint_tolerance", waypoint_tolerance_);
+    get_parameter("goal_tolerance", goal_tolerance_);
+
     geometry_msgs::msg::Twist command;
     if (!odom_msg_ || path_.empty()) {
       cmd_pub_->publish(command);

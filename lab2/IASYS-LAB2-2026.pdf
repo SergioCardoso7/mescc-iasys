@@ -1,0 +1,270 @@
+<html>
+
+<head>
+    <title>MoodleISEP</title>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="content-type" content="application/xhtml+xml; charset=UTF-8" />
+    <meta http-equiv="content-style-type" content="text/css" />
+    <style>
+        a.Gray {
+            color: #a6a6a6;
+            text-decoration: none;
+            border-bottom: 0px;
+        }
+
+        a.Gray:hover {
+            color: #e04e15;
+            border-bottom: 0px;
+        }
+
+        input.Texto {
+            height: 20px;
+            width: 250px;
+            border-radius: 4px;
+            padding-left: 8px;
+            border: 1px solid #818181;
+            color: gray !important;
+            font-family: Arial;
+            font-size: 8pt;
+        }
+
+        input.Botao {
+            height: 20px;
+            width: 100px;
+            border: 1px solid #818181;
+            font-family: verdana, sans-serif;
+            font-size: 11px;
+            color: #505A5D;
+            border-radius: 4px;
+        }
+
+        body,
+        table,
+        tr,
+        td,
+        a,
+        p,
+        span,
+        div,
+        h1,
+        h2,
+        h3,
+        h4,
+        input,
+        select,
+        option,
+        textarea {
+            font-family: verdana, sans-serif;
+            font-size: 11px;
+            color: #505A5D;
+        }
+
+        #divErro {
+            visibility: hidden;
+            min-width: 300px;
+            margin-left: -125px;
+            background-color: red;
+            color: #fff;
+            text-align: center;
+            border-radius: 2px;
+            padding: 16px;
+            top: 220px;
+            position: fixed;
+            z-index: 1;
+            left: 50%;
+            font-size: 17px;
+        }
+
+        #divErro.show {
+            visibility: visible;
+            animation: fadein 0.5s, fadeout 0.5s 2.5s;
+        }
+
+        @-webkit-keyframes fadein {
+            from {
+                top: 220px;
+                opacity: 0;
+            }
+
+            to {
+                top: 220px;
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadein {
+            from {
+                top: 220px;
+                opacity: 0;
+            }
+
+            to {
+                top: 220px;
+                opacity: 1;
+            }
+        }
+
+        @-webkit-keyframes fadeout {
+            from {
+                top: 220px;
+                opacity: 1;
+            }
+
+            to {
+                top: 220px;
+                opacity: 0;
+            }
+        }
+
+        @keyframes fadeout {
+            from {
+                top: 220px;
+                opacity: 1;
+            }
+
+            to {
+                top: 220px;
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <table style="width:100%; cellpadding:0px; border:0px" cellspacing="80">
+
+        <tr>
+            <td valign="center" align="center" height="100%">
+                <table border="0" style="height:400px; max-width:700px; align:center; cellpadding:0px;" cellspacing="0">
+                    <tr>
+                        <td height="100" colspan="4"><img src="2023_topo.png" style="max-width:700px;" /></td>
+                    </tr>
+                    <tr style="height: 170px;">
+                        <td width="25" rowspan="2">&nbsp;</td>
+                        <td valign="top" rowspan="2" align="left" width="320">
+                            <img src="2023_logo.png" alt="Logo ISEP" title="Logo ISEP" />
+
+							<style>
+								.tooltip {
+									position: relative;
+									display: inline-block;
+									opacity: 1;
+									top: 25px;
+								}
+
+								.tooltip-text {
+									visibility: hidden;
+									opacity: 0;
+									width: 280px;
+									background-color: #333;
+									color: #fff;
+									text-align: left;
+									font-weight: normal;
+									padding: 12px 16px;
+									border-radius: 15px;
+									position: absolute;
+									z-index: 10;
+									bottom: 90%;
+									left: -4%;
+									box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+									transition: opacity .5s ease;
+								}
+
+								.tooltip:hover .tooltip-text {
+									visibility: visible;
+									opacity: 1;
+								}
+							</style>
+							<a class="tooltip" href="https://url.isep.pt/certqualidade" target="_blank">
+								<img src="./LogoCertificacao_2026.png" style="height: 100px;" id="imgBoasPraticasISEP"  />
+								<div class="tooltip-text">
+									Âmbito da Certificação: <br />
+									Serviços administrativos de apoio à gestão e aos departamentos de ensino.<br />
+									Centros de Prestação de Serviços.
+								</div>
+							</a>
+
+                        </td>
+                        <td valign="bottom" width="270px">
+                            <form action="../login/index.php" method="post" onsubmit="limpauser()">
+                                <table border="0" style="height: 100px;">
+                                    <tr>
+                                        <td colspan="3" style="height:40px"><img src="bemvindo2.jpg" style="max-width:250px;" /></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="height:30px" align="left" colspan="3"><input type="text" id="username" name="username" size="21" placeholder="UTILIZADOR" class="Texto" /></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="height:30px" align="left" colspan="3"><input type="password" name="password" size="21" placeholder="PALAVRA-PASSE" class="Texto" /></td>
+                                    </tr>
+                                    <tr>
+                                        <td align="left">
+                                            <input type="submit" value="Entrar" class="Botao" />
+                                        </td>
+                                        <td style="border-left: 1px solid #a6a6a6;">
+                                        </td>
+                                        <td>
+                                        <a class="Gray" href="#" onclick="{open('https://portal.isep.ipp.pt/intranet/permit/recuperar_acesso.aspx','','');}">Recuperar Password (ISEP)</a>
+                                        <a class="Gray" href="#" onclick="{open('https://moodle.isep.ipp.pt/login/forgot_password.php','','');}">Recuperar Password (Externos)</a>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </form><br />
+                        </td>
+                        <td width="40px">&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td valign="top">
+                            <table width=100% border=0>
+                                <tr>
+                                    <td style="height:20px"><a class="Gray" href="#" onclick="{open('https://www.isep.ipp.pt','','');}">Site do ISEP</a><br /></td>
+                                    <td style="height:20px"><a class="Gray" href="#" onclick="{open('https://portal.isep.ipp.pt','','');}">Portal do ISEP</a><br /></td>
+                                </tr>
+                                <tr>
+                                    <td style="height:20px"><a class="Gray" href="#" onclick="{open('https://emprego.ipp.pt','','');}">Bolsa de Emprego</a><br /></td>
+                                    <td style="height:20px"><a class="Gray" href="#" onclick="{open('http://outlook.isep.ipp.pt','','');}">Webmail ISEP</a><br /></td>
+                                </tr>
+                            </table>
+
+                        </td>
+                        <td width="40px">&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td colspan="4"><img src="2023_rodape.png" style="max-width:700px;" /></td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+    <div id="divErro">
+        <img src="erro.png" />
+        <h2 style="color: white;">Dados de acesso errados!</h2>
+
+
+    </div>
+    <script language="JavaScript" type="text/javascript">
+        <!--
+        function myFunction() {
+            var x = document.getElementById('divErro');
+            x.className = 'show';
+            setTimeout(function() {
+                x.className = x.className.replace("show", "");
+            }, 3000);
+        }
+
+        function limpauser() {
+            user = document.getElementById("username");
+
+            res = user.value.split("@", 2);
+
+            if (res[1] != "undefined") {
+                if (res[1] == "isep.ipp.pt")
+                    user.value = res[0];
+            }
+        }
+                // 
+        -->
+    </script>
+</body>
+
+</html>
